@@ -1,0 +1,194 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Hello WebXR!</title>
+
+    <!-- three.js -->
+    <script src="libs/three.js"></script>
+    <!-- GLTFLoader -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
+</head>
+
+
+<style>
+    /* General styles */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .container {
+        text-align: center;
+        padding: 20px;
+        max-width: 600px;
+        width: 100%;
+    }
+
+    h1 {
+        color: #333;
+        font-size: 36px;
+        margin-bottom: 20px;
+    }
+
+    p {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+    button {
+        background-color: #0056b3;
+        color: white;
+        font-size: 18px;
+        padding: 12px 24px;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #003d80;
+    }
+
+    /* Mobile styles */
+    @media (max-width: 600px) {
+        h1 {
+            font-size: 28px;
+        }
+
+        p {
+            font-size: 16px;
+        }
+
+        .btn {
+            font-size: 16px;
+            padding: 10px 20px;
+        }
+    }
+</style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Welcome to SkillUp's AR Experience</h1>
+        <p>Explore our augmented reality content and discover more about our projects.</p>
+        <p>Landscape mode recommended for a better experience</p>
+        <button onclick="activateXR()">Start AR Experience</button>
+    </div>
+    
+    <script>
+        async function activateXR() {
+            const canvas = document.createElement("canvas");
+            document.body.appendChild(canvas);
+            const gl = canvas.getContext("webgl", { xrCompatible: true });
+
+            const scene = new THREE.Scene();
+            //  Load the logo GLB model
+            const logoLoader = new THREE.GLTFLoader();
+            logoLoader.load('models/LOGO.glb', function (gltf) {
+                // Adjust position, scale, or rotation if necessary
+                gltf.scene.position.set(0, 0, -1);  // Place it further back
+                // gltf.scene.scale.set(0.1, 0.1, 0.1);
+                // gltf.scene.rotation.set(0, Math.PI / 2, 0);  // Rotate 90 degrees to the left on Y-axis
+                scene.add(gltf.scene);
+            }, undefined, function (error) {
+                console.error('An error occurred loading the GLB model:', error);
+            });
+
+            // GLB loader function to simplify loading models
+            function loadModel(positionX, imagePath) {
+                const loader = new THREE.GLTFLoader();
+                loader.load('models/FILM-FRAME.glb', function (gltf) {
+                    gltf.scene.position.set(positionX, -0.3, -1);  // Position along X-axis
+                    gltf.scene.scale.set(0.1, 0.1, 0.1);  // Scale down the model
+                    scene.add(gltf.scene);
+
+                    // Add photo as a plane geometry at the same position
+                    const textureLoader = new THREE.TextureLoader();
+                    textureLoader.load(imagePath, function (texture) {
+                        const photoGeometry = new THREE.PlaneGeometry(0.35, 0.5);  // Adjust size as needed
+                        const photoMaterial = new THREE.MeshBasicMaterial({ map: texture });
+                        const photo = new THREE.Mesh(photoGeometry, photoMaterial);
+                        photo.position.set(positionX, 0.02, -0.99);  // Slightly in front of the GLB model
+                        scene.add(photo);
+                    }, undefined, function (error) {
+                        console.error('An error occurred loading the photo texture:', error);
+                    });
+                }, undefined, function (error) {
+                    console.error('An error occurred loading the GLB model:', error);
+                });
+            }
+
+            // Load multiple models at different positions
+            for (let i = 1; i < 7; i++) {
+                const imagePath = `images/photo${i}.jpg`;  // Example image path pattern
+                loadModel(i, imagePath);
+            }
+
+            // Add a cube with different colored sides
+            const materials = [
+                new THREE.MeshBasicMaterial({ color: 0xff0000 }),
+                new THREE.MeshBasicMaterial({ color: 0x0000ff }),
+                new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
+                new THREE.MeshBasicMaterial({ color: 0xff00ff }),
+                new THREE.MeshBasicMaterial({ color: 0x00ffff }),
+                new THREE.MeshBasicMaterial({ color: 0xffff00 })
+            ];
+            const cube = new THREE.Mesh(new THREE.BoxBufferGeometry(0.2, 0.2, 0.2), materials);
+            cube.position.set(0, 0, -0.5);  // Place it directly in front of the viewer
+            // scene.add(cube);
+
+            const renderer = new THREE.WebGLRenderer({
+                alpha: true,
+                preserveDrawingBuffer: true,
+                canvas: canvas,
+                context: gl
+            });
+            renderer.autoClear = false;
+
+            const camera = new THREE.PerspectiveCamera();
+            camera.matrixAutoUpdate = false;
+
+            const session = await navigator.xr.requestSession("immersive-ar");
+            session.updateRenderState({
+                baseLayer: new XRWebGLLayer(session, gl)
+            });
+
+            const referenceSpace = await session.requestReferenceSpace('local');
+
+            const onXRFrame = (time, frame) => {
+                session.requestAnimationFrame(onXRFrame);
+                gl.bindFramebuffer(gl.FRAMEBUFFER, session.renderState.baseLayer.framebuffer);
+
+                const pose = frame.getViewerPose(referenceSpace);
+                if (pose) {
+                    const view = pose.views[0];
+                    const viewport = session.renderState.baseLayer.getViewport(view);
+                    renderer.setSize(viewport.width, viewport.height);
+
+                    camera.matrix.fromArray(view.transform.matrix);
+                    camera.projectionMatrix.fromArray(view.projectionMatrix);
+                    camera.updateMatrixWorld(true);
+
+                    renderer.render(scene, camera);
+                }
+            };
+            session.requestAnimationFrame(onXRFrame);
+        }
+    </script>
+</body>
+
+</html>
