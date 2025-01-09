@@ -136,8 +136,9 @@
             }
 
             // Load multiple models at different positions
-            for (let i = 0; i < 6; i++) {
-                const imagePath = `images/photo${i + 1}.jpg`;  // Example image path pattern
+            for (let i = 0; i > -6; i--) {
+                const imageNumber = Math.abs(i - 0) + 1;  // This will start from 1 and go up to 6
+                const imagePath = `images/photo${imageNumber}.jpg`;
                 loadModel(i, 0.5, imagePath);
             }
 
