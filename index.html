@@ -10,11 +10,10 @@
     <!-- three.js -->
     <script src="libs/three.js"></script>
     <!-- GLTFLoader -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script> -->
     <!-- <script src="three.js-master/examples/jsm/loaders/GLTFLoader.js"></script> -->
-    <!-- <script src="libs/GLTFLoader.js"></script> -->
+    <script src="libs/GLTFLoader.js"></script>
 </head>
-
 
 <style>
     /* General styles */
@@ -94,110 +93,117 @@
 
     <script>
         async function activateXR() {
-            const canvas = document.createElement("canvas");
-            document.body.appendChild(canvas);
-            const gl = canvas.getContext("webgl", { xrCompatible: true });
+            try {
+                const canvas = document.createElement("canvas");
+                document.body.appendChild(canvas);
+                const gl = canvas.getContext("webgl", { xrCompatible: true });
 
-            const scene = new THREE.Scene();
-            //  Load the logo GLB model
-            const logoLoader = new THREE.GLTFLoader();
-            logoLoader.load('models/LOGO.glb', function (gltf) {
-                // Adjust position, scale, or rotation if necessary
-                gltf.scene.position.set(0, -1, -1);  // Place it further back
-                // gltf.scene.scale.set(0.1, 0.1, 0.1);
-                // gltf.scene.rotation.set(0, Math.PI / 2, 0);  // Rotate 90 degrees to the left on Y-axis
-                scene.add(gltf.scene);
-            }, undefined, function (error) {
-                console.error('An error occurred loading the GLB model:', error);
-            });
-
-            // GLB loader function to simplify loading models
-            function loadModel(positionX, positionZ, imagePath, rotation = 0) {
-                const loader = new THREE.GLTFLoader();
-                loader.load('models/FILM-FRAME.glb', function (gltf) {
-                    gltf.scene.position.set(positionX, -0.3, -1 + positionZ);  // Position along X-axis
-                    gltf.scene.scale.set(0.1, 0.1, 0.1);  // Scale down the model
-                    gltf.scene.rotation.y = rotation;  // Apply rotation
+                const scene = new THREE.Scene();
+                //  Load the logo GLB model
+                const logoLoader = new THREE.GLTFLoader();
+                logoLoader.load('models/LOGO.glb', function (gltf) {
+                    // Adjust position, scale, or rotation if necessary
+                    gltf.scene.position.set(0, -1, -1);  // Place it further back
+                    // gltf.scene.scale.set(0.1, 0.1, 0.1);
+                    // gltf.scene.rotation.set(0, Math.PI / 2, 0);  // Rotate 90 degrees to the left on Y-axis
                     scene.add(gltf.scene);
-
-                    // Add photo as a plane geometry at the same position
-                    const textureLoader = new THREE.TextureLoader();
-                    textureLoader.load(imagePath, function (texture) {
-                        const photoGeometry = new THREE.PlaneGeometry(0.35, 0.5);  // Adjust size as needed
-                        const photoMaterial = new THREE.MeshBasicMaterial({ map: texture });
-                        const photo = new THREE.Mesh(photoGeometry, photoMaterial);
-                        photo.position.set(positionX, 0.02, -0.99 + positionZ);  // Slightly in front of the GLB model
-                        photo.rotation.y = rotation;  // Apply same rotation to photo
-                        scene.add(photo);
-                    }, undefined, function (error) {
-                        console.error('An error occurred loading the photo texture:', error);
-                    });
                 }, undefined, function (error) {
                     console.error('An error occurred loading the GLB model:', error);
                 });
-            }
 
-            // Load multiple models at different positions
-            for (let i = 0; i > -6; i--) {
-                const imagePath = `images/photo${Math.abs(i - 0) + 1}.jpg`;
+                // GLB loader function to simplify loading models
+                function loadModel(positionX, positionZ, imagePath, rotation = 0) {
+                    const loader = new THREE.GLTFLoader();
+                    loader.load('models/FILM-FRAME.glb', function (gltf) {
+                        gltf.scene.position.set(positionX, -0.3, -1 + positionZ);  // Position along X-axis
+                        gltf.scene.scale.set(0.1, 0.1, 0.1);  // Scale down the model
+                        gltf.scene.rotation.y = rotation;  // Apply rotation
+                        scene.add(gltf.scene);
 
-                if (i > -3) {
-                    loadModel(i, 0.5, imagePath, 0);  // First 3 models with no rotation
+                        // Add photo as a plane geometry at the same position
+                        const textureLoader = new THREE.TextureLoader();
+                        textureLoader.load(imagePath, function (texture) {
+                            const photoGeometry = new THREE.PlaneGeometry(0.35, 0.5);  // Adjust size as needed
+                            const photoMaterial = new THREE.MeshBasicMaterial({ map: texture });
+                            const photo = new THREE.Mesh(photoGeometry, photoMaterial);
+                            photo.position.set(positionX, 0.02, -0.99 + positionZ);  // Slightly in front of the GLB model
+                            photo.rotation.y = rotation;  // Apply same rotation to photo
+                            scene.add(photo);
+                        }, undefined, function (error) {
+                            console.error('An error occurred loading the photo texture:', error);
+                        });
+                    }, undefined, function (error) {
+                        console.error('An error occurred loading the GLB model:', error);
+                    });
                 }
-                else {
-                    loadModel(i + 3, 3, imagePath, Math.PI);  // Last 3 models rotated 180 degrees
+
+                // Load multiple models at different positions
+                for (let i = 0; i > -6; i--) {
+                    const imagePath = `images/photo${Math.abs(i - 0) + 1}.jpg`;
+
+                    if (i > -3) {
+                        loadModel(i, 0.5, imagePath, 0);  // First 3 models with no rotation
+                    }
+                    else {
+                        loadModel(i + 3, 3, imagePath, Math.PI);  // Last 3 models rotated 180 degrees
+                    }
                 }
-            }
 
-            // Add a cube with different colored sides
-            const materials = [
-                new THREE.MeshBasicMaterial({ color: 0xff0000 }),
-                new THREE.MeshBasicMaterial({ color: 0x0000ff }),
-                new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
-                new THREE.MeshBasicMaterial({ color: 0xff00ff }),
-                new THREE.MeshBasicMaterial({ color: 0x00ffff }),
-                new THREE.MeshBasicMaterial({ color: 0xffff00 })
-            ];
-            const cube = new THREE.Mesh(new THREE.BoxBufferGeometry(0.2, 0.2, 0.2), materials);
-            cube.position.set(0, 0, -0.5);  // Place it directly in front of the viewer
-            // scene.add(cube);
+                // Add a cube with different colored sides
+                const materials = [
+                    new THREE.MeshBasicMaterial({ color: 0xff0000 }),
+                    new THREE.MeshBasicMaterial({ color: 0x0000ff }),
+                    new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
+                    new THREE.MeshBasicMaterial({ color: 0xff00ff }),
+                    new THREE.MeshBasicMaterial({ color: 0x00ffff }),
+                    new THREE.MeshBasicMaterial({ color: 0xffff00 })
+                ];
+                const cube = new THREE.Mesh(new THREE.BoxBufferGeometry(0.2, 0.2, 0.2), materials);
+                cube.position.set(0, 0, -0.5);  // Place it directly in front of the viewer
+                // scene.add(cube);
 
-            const renderer = new THREE.WebGLRenderer({
-                alpha: true,
-                preserveDrawingBuffer: true,
-                canvas: canvas,
-                context: gl
-            });
-            renderer.autoClear = false;
+                const renderer = new THREE.WebGLRenderer({
+                    alpha: true,
+                    preserveDrawingBuffer: true,
+                    canvas: canvas,
+                    context: gl
+                });
+                renderer.autoClear = false;
 
-            const camera = new THREE.PerspectiveCamera();
-            camera.matrixAutoUpdate = false;
+                const camera = new THREE.PerspectiveCamera();
+                camera.matrixAutoUpdate = false;
 
-            const session = await navigator.xr.requestSession("immersive-ar");
-            session.updateRenderState({
-                baseLayer: new XRWebGLLayer(session, gl)
-            });
+                const session = await navigator.xr.requestSession("immersive-ar");
+                session.updateRenderState({
+                    baseLayer: new XRWebGLLayer(session, gl)
+                });
 
-            const referenceSpace = await session.requestReferenceSpace('local');
+                const referenceSpace = await session.requestReferenceSpace('local');
+                const onXRFrame = (time, frame) => {
+                    session.requestAnimationFrame(onXRFrame);
+                    gl.bindFramebuffer(gl.FRAMEBUFFER, session.renderState.baseLayer.framebuffer);
 
-            const onXRFrame = (time, frame) => {
+                    const pose = frame.getViewerPose(referenceSpace);
+                    if (pose) {
+                        const view = pose.views[0];
+                        const viewport = session.renderState.baseLayer.getViewport(view);
+                        renderer.setSize(viewport.width, viewport.height);
+
+                        camera.matrix.fromArray(view.transform.matrix);
+                        camera.projectionMatrix.fromArray(view.projectionMatrix);
+                        camera.updateMatrixWorld(true);
+
+                        renderer.render(scene, camera);
+                    }
+                };
                 session.requestAnimationFrame(onXRFrame);
-                gl.bindFramebuffer(gl.FRAMEBUFFER, session.renderState.baseLayer.framebuffer);
-
-                const pose = frame.getViewerPose(referenceSpace);
-                if (pose) {
-                    const view = pose.views[0];
-                    const viewport = session.renderState.baseLayer.getViewport(view);
-                    renderer.setSize(viewport.width, viewport.height);
-
-                    camera.matrix.fromArray(view.transform.matrix);
-                    camera.projectionMatrix.fromArray(view.projectionMatrix);
-                    camera.updateMatrixWorld(true);
-
-                    renderer.render(scene, camera);
+            } catch (error) {
+                console.error("An error occurred:", error);
+                if (error.name === "NotSupportedError" || error.message.includes("No runtimes supported")) {
+                    // Redirect to fallback page
+                    window.location.href = "ALT/ar-exp.html";
                 }
-            };
-            session.requestAnimationFrame(onXRFrame);
+            }
         }
     </script>
 </body>
