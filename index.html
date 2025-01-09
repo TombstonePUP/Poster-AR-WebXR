@@ -93,41 +93,51 @@
 
     <script>
         async function activateXR() {
+            // Detect iOS browsers (Safari, Chrome on iPhone, etc.)
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+            // Detect Safari specifically
+            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+            // Check if WebXR is unsupported or the browser is iOS/Safari
+            if (isIOS || isSafari || !navigator.xr) {
+                console.warn("WebXR not supported on this device or browser. Redirecting...");
+                window.location.href = "ALT/ar-exp.html";
+                return;
+            }
+
             try {
                 const canvas = document.createElement("canvas");
                 document.body.appendChild(canvas);
                 const gl = canvas.getContext("webgl", { xrCompatible: true });
 
                 const scene = new THREE.Scene();
-                //  Load the logo GLB model
+
+                // Load the logo GLB model
                 const logoLoader = new THREE.GLTFLoader();
                 logoLoader.load('models/LOGO.glb', function (gltf) {
-                    // Adjust position, scale, or rotation if necessary
-                    gltf.scene.position.set(0, -1, -1);  // Place it further back
-                    // gltf.scene.scale.set(0.1, 0.1, 0.1);
-                    // gltf.scene.rotation.set(0, Math.PI / 2, 0);  // Rotate 90 degrees to the left on Y-axis
+                    gltf.scene.position.set(0, -1, -1);
                     scene.add(gltf.scene);
                 }, undefined, function (error) {
                     console.error('An error occurred loading the GLB model:', error);
                 });
 
-                // GLB loader function to simplify loading models
+                // GLB loader function
                 function loadModel(positionX, positionZ, imagePath, rotation = 0) {
                     const loader = new THREE.GLTFLoader();
                     loader.load('models/FILM-FRAME.glb', function (gltf) {
-                        gltf.scene.position.set(positionX, -0.3, -1 + positionZ);  // Position along X-axis
-                        gltf.scene.scale.set(0.1, 0.1, 0.1);  // Scale down the model
-                        gltf.scene.rotation.y = rotation;  // Apply rotation
+                        gltf.scene.position.set(positionX, -0.3, -1 + positionZ);
+                        gltf.scene.scale.set(0.1, 0.1, 0.1);
+                        gltf.scene.rotation.y = rotation;
                         scene.add(gltf.scene);
 
-                        // Add photo as a plane geometry at the same position
                         const textureLoader = new THREE.TextureLoader();
                         textureLoader.load(imagePath, function (texture) {
-                            const photoGeometry = new THREE.PlaneGeometry(0.35, 0.5);  // Adjust size as needed
+                            const photoGeometry = new THREE.PlaneGeometry(0.35, 0.5);
                             const photoMaterial = new THREE.MeshBasicMaterial({ map: texture });
                             const photo = new THREE.Mesh(photoGeometry, photoMaterial);
-                            photo.position.set(positionX, 0.02, -0.99 + positionZ);  // Slightly in front of the GLB model
-                            photo.rotation.y = rotation;  // Apply same rotation to photo
+                            photo.position.set(positionX, 0.02, -0.99 + positionZ);
+                            photo.rotation.y = rotation;
                             scene.add(photo);
                         }, undefined, function (error) {
                             console.error('An error occurred loading the photo texture:', error);
@@ -137,30 +147,14 @@
                     });
                 }
 
-                // Load multiple models at different positions
                 for (let i = 0; i > -6; i--) {
                     const imagePath = `images/photo${Math.abs(i - 0) + 1}.jpg`;
-
                     if (i > -3) {
-                        loadModel(i, 0.5, imagePath, 0);  // First 3 models with no rotation
-                    }
-                    else {
-                        loadModel(i + 3, 3, imagePath, Math.PI);  // Last 3 models rotated 180 degrees
+                        loadModel(i, 0.5, imagePath, 0);
+                    } else {
+                        loadModel(i + 3, 3, imagePath, Math.PI);
                     }
                 }
-
-                // Add a cube with different colored sides
-                const materials = [
-                    new THREE.MeshBasicMaterial({ color: 0xff0000 }),
-                    new THREE.MeshBasicMaterial({ color: 0x0000ff }),
-                    new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
-                    new THREE.MeshBasicMaterial({ color: 0xff00ff }),
-                    new THREE.MeshBasicMaterial({ color: 0x00ffff }),
-                    new THREE.MeshBasicMaterial({ color: 0xffff00 })
-                ];
-                const cube = new THREE.Mesh(new THREE.BoxBufferGeometry(0.2, 0.2, 0.2), materials);
-                cube.position.set(0, 0, -0.5);  // Place it directly in front of the viewer
-                // scene.add(cube);
 
                 const renderer = new THREE.WebGLRenderer({
                     alpha: true,
@@ -179,6 +173,7 @@
                 });
 
                 const referenceSpace = await session.requestReferenceSpace('local');
+
                 const onXRFrame = (time, frame) => {
                     session.requestAnimationFrame(onXRFrame);
                     gl.bindFramebuffer(gl.FRAMEBUFFER, session.renderState.baseLayer.framebuffer);
@@ -200,7 +195,7 @@
             } catch (error) {
                 console.error("An error occurred:", error);
                 if (error.name === "NotSupportedError" || error.message.includes("No runtimes supported")) {
-                    // Redirect to fallback page
+                    console.warn("WebXR runtime not supported. Redirecting...");
                     window.location.href = "ALT/ar-exp.html";
                 }
             }
