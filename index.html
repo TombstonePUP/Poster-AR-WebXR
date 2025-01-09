@@ -103,7 +103,7 @@
             const logoLoader = new THREE.GLTFLoader();
             logoLoader.load('models/LOGO.glb', function (gltf) {
                 // Adjust position, scale, or rotation if necessary
-                gltf.scene.position.set(0, 0, -1);  // Place it further back
+                gltf.scene.position.set(0, -1, -1);  // Place it further back
                 // gltf.scene.scale.set(0.1, 0.1, 0.1);
                 // gltf.scene.rotation.set(0, Math.PI / 2, 0);  // Rotate 90 degrees to the left on Y-axis
                 scene.add(gltf.scene);
@@ -112,10 +112,10 @@
             });
 
             // GLB loader function to simplify loading models
-            function loadModel(positionX, imagePath) {
+            function loadModel(positionX, positionZ, imagePath) {
                 const loader = new THREE.GLTFLoader();
                 loader.load('models/FILM-FRAME.glb', function (gltf) {
-                    gltf.scene.position.set(positionX, -0.3, -1);  // Position along X-axis
+                    gltf.scene.position.set(positionX, -0.3, -1 + positionZ);  // Position along X-axis
                     gltf.scene.scale.set(0.1, 0.1, 0.1);  // Scale down the model
                     scene.add(gltf.scene);
 
@@ -125,7 +125,7 @@
                         const photoGeometry = new THREE.PlaneGeometry(0.35, 0.5);  // Adjust size as needed
                         const photoMaterial = new THREE.MeshBasicMaterial({ map: texture });
                         const photo = new THREE.Mesh(photoGeometry, photoMaterial);
-                        photo.position.set(positionX, 0.02, -0.99);  // Slightly in front of the GLB model
+                        photo.position.set(positionX, 0.02, -0.99 + positionZ);  // Slightly in front of the GLB model
                         scene.add(photo);
                     }, undefined, function (error) {
                         console.error('An error occurred loading the photo texture:', error);
@@ -136,9 +136,9 @@
             }
 
             // Load multiple models at different positions
-            for (let i = 1; i < 7; i++) {
-                const imagePath = `images/photo${i}.jpg`;  // Example image path pattern
-                loadModel(i, imagePath);
+            for (let i = 0; i < 6; i++) {
+                const imagePath = `images/photo${i + 1}.jpg`;  // Example image path pattern
+                loadModel(i, 0.5, imagePath);
             }
 
             // Add a cube with different colored sides
