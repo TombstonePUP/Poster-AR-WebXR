@@ -37,6 +37,13 @@
         width: 100%;
     }
 
+    .btns {
+        display: flex;
+        flex-direction: column;
+        gap: 1vh;
+        align-items: center;
+    }
+
     h1 {
         color: #333;
         font-size: 36px;
@@ -67,6 +74,7 @@
 
     /* Mobile styles */
     @media (max-width: 600px) {
+
         h1 {
             font-size: 28px;
         }
@@ -75,9 +83,10 @@
             font-size: 16px;
         }
 
-        .btn {
+        button {
             font-size: 16px;
             padding: 10px 20px;
+            width: 60%;
         }
     }
 </style>
@@ -85,11 +94,14 @@
 
 <body>
     <div class="container">
-        <h1>Welcome to SkillUp's AR Experience</h1>
+        <h1>Welcome to SkillUp's AR/VR Experience</h1>
         <p>Explore our augmented reality content and discover more about our projects.</p>
         <p>Landscape mode recommended for a better experience</p>
-        <button onclick="activateXR()">Start AR Experience</button>
-        <button onclick="activateVR()">Start VR Experience</button>
+        <div class="btns">
+            <button onclick="activateXR()">Start AR Experience</button>
+            <button onclick="activateVR()">Start VR Experience</button>
+        </div>
+
     </div>
 
     <script>

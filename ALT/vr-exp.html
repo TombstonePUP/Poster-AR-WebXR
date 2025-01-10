@@ -10,57 +10,53 @@
       margin: 0;
       overflow: hidden;
       height: 100vh;
-      /* Ensure body takes the full viewport height */
     }
 
     #enter-vr {
       position: fixed;
-      /* Use fixed positioning to cover the whole screen */
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       background-color: rgba(0, 0, 0);
-      /* Slight transparency for better visibility */
       color: #fff;
       border: none;
       padding: 0;
       font-size: 24px;
-      /* Increase font size for better readability */
       cursor: pointer;
       border-radius: 0;
-      /* Remove border radius to fit the whole screen */
       z-index: 1000;
       display: flex;
       justify-content: center;
       align-items: center;
       text-align: center;
     }
-  </style>
 
+    #enter-vr span {
+      display: inline-block;
+      transform: rotate(90deg);
+      /* Rotate only the text */
+      transform-origin: center;
+      /* Keep rotation centered */
+    }
+  </style>
 </head>
 
 <body>
-  <!-- Overlay Message -->
-  <div id="overlay">Landscape mode recommended for a better experience</div>
-  <!-- Custom VR Button -->
-
+  <button id="enter-vr"><span>Enter VR</span></button>
   <a-scene embedded antialias="false" stats="false" vr-mode-ui="enabled: false">
     <!-- Video with Sound (hidden) -->
     <a-video id="background-sound" src="/videos/section-trailer.mp4" autoplay="true" loop="false" position="0 0 0"
       scale="0 0 0"></a-video>
 
     <!-- Picture Plane -->
-    <a-plane id="imagePlane" scale="1 1.4 1" position="0 1.5 -3" rotation="0 0 0"
-      material="shader: flat; src:POSTERS/PIYESA-Poster.png"></a-plane>
-
+    <!-- <a-plane id="imagePlane" scale="1 1.4 1" position="0 2.5 -3" rotation="0 0 0" material="shader: flat; src:POSTERS/PIYESA-Poster.png"></a-plane> -->
     <!-- GLB Model slightly behind the picture -->
-    <a-entity gltf-model="3D/FILM-FRAME.glb" scale="0.3 0.3 0.3" rotation="0 0 0" position="0 1.5 -3.2"></a-entity>
-
+    <!-- <a-entity gltf-model="3D/FILM-FRAME.glb" scale="0.3 0.3 0.3" rotation="0 0 0" position="0 1.5 -3.2"></a-entity> -->
+    <a-entity gltf-model="3D/theater.glb" scale="1 1 1" rotation="0 180 0" position="-0.5 1.5 -2.5"></a-entity>
     <!-- Camera to view the scene -->
     <a-entity camera position="0 1.6 0"></a-entity>
   </a-scene>
-  <button id="enter-vr">Enter VR</button>
   <script>
     // Custom VR button functionality
     const enterVRButton = document.getElementById('enter-vr');
