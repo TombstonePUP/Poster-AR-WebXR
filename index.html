@@ -89,9 +89,13 @@
         <p>Explore our augmented reality content and discover more about our projects.</p>
         <p>Landscape mode recommended for a better experience</p>
         <button onclick="activateXR()">Start AR Experience</button>
+        <button onclick="activateVR()">Start VR Experience</button>
     </div>
 
     <script>
+        function activateVR() {
+            window.location.href = 'alt/vr-exp.html';
+        }
         async function activateXR() {
             // Detect iOS browsers (Safari, Chrome on iPhone, etc.)
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
