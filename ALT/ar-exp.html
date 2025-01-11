@@ -3,8 +3,6 @@
 
 <head>
   <title>AR Skill Up</title>
-  <!-- <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/2.1.7/aframe/build/aframe-ar.js"></script> -->
   <script src="libs/aframe-1.2.0.min.js"></script>
   <script src="libs/aframe-ar.js"></script>
   <style>
@@ -23,7 +21,6 @@
       border-radius: 8px;
       z-index: 1000;
       display: none;
-      /* Initially hidden */
       max-width: 80%;
       box-sizing: border-box;
     }
@@ -45,51 +42,54 @@
   <a-scene embedded antialias="false" stats="false"
     arjs="sourceType: webcam; smooth: true; smoothCount: 100; smoothTolerance: 0.05; smoothThreshold: 1; debugUIEnabled: false; cameraParametersUrl: libs/camera_para.dat;"
     vr-mode-ui="enabled: false">
-
-    <!-- Video with Sound (hidden) -->
-    <a-video id="background-sound" src="/videos/section-trailer.mp4" autoplay="true" loop="false" position="0 0 0"
-      scale="0 0 0"></a-video>
-
-    <!-- Marker for tracking -->
-    <!-- piyesa  -->
+    <a-video src="videos/section-trailer.mp4" scale="1 0.55 0" position="0 0 0.65" rotation="-90 0 0"></a-video>
+    <!-- piyesa -->
     <a-marker type="pattern" url="PATTS/pattern-G1.patt">
-      <!-- Middle -->
-      <a-plane id="imagePlane" scale="1 1.4 1" position="0 0 0" rotation="-90 0 0"
+      <a-plane scale="1 1.4 1" position="0 0 -0.55" rotation="-90 0 0"
         material="shader: flat; src:POSTERS/photo1.jpg"></a-plane>
-      <a-entity gltf-model="3D/FILM-FRAME.glb" scale="0.3 0.3 0.3" rotation="-90 0 0" position="0 0 1"></a-entity>
+      <a-video src="videos/trailer1.mp4" scale="1 0.55 0" position="0 0 0.65" rotation="-90 0 0"></a-video>
+      <a-entity gltf-model="3D/poster-trailer.glb" q scale="0.3 0.3 0.3" rotation="-90 0 0" position="0 0 1"></a-entity>
     </a-marker>
 
-    <!-- bukas na  -->
-    <a-marker type="pattern" url="PATTS/pattern-G2.patt">
-      <a-plane id="imagePlane" scale="1 1.4 1" position="0 0 0" rotation="-90 0 0"
-        material="shader: flat; src:POSTERS/photo3.jpg"></a-plane>
-      <a-entity gltf-model="3D/FILM-FRAME.glb" scale="0.3 0.3 0.3" rotation="-90 0 0" position="0 0 1"></a-entity>
-    </a-marker>
-
-    <!-- huli ka ninang  -->
-    <a-marker type="pattern" url="PATTS/pattern-G3.patt">
-      <a-plane id="imagePlane" scale="1 1.4 1" position="0 0 0" rotation="-90 0 0"
-        material="shader: flat; src:POSTERS/photo6.jpg"></a-plane>
-      <a-entity gltf-model="3D/FILM-FRAME.glb" scale="0.3 0.3 0.3" rotation="-90 0 0" position="0 0 1"></a-entity>
-    </a-marker>
-
-    <!-- kita kits  -->
-    <a-marker type="pattern" url="PATTS/pattern-G4.patt">
-      <a-plane id="imagePlane" scale="1 1.4 1" position="0 0 0" rotation="-90 0 0"
-        material="shader: flat; src:POSTERS/photo4.jpg"></a-plane>
-      <a-entity gltf-model="3D/FILM-FRAME.glb" scale="0.3 0.3 0.3" rotation="-90 0 0" position="0 0 1"></a-entity>
-    </a-marker>
-    <!-- echoes of summer  -->
-    <a-marker type="pattern" url="PATTS/pattern-G5.patt">
-      <a-plane id="imagePlane" scale="1 1.4 1" position="0 0 0" rotation="-90 0 0"
-        material="shader: flat; src:POSTERS/photo5.jpg"></a-plane>
-      <a-entity gltf-model="3D/FILM-FRAME.glb" scale="0.3 0.3 0.3" rotation="-90 0 0" position="0 0 1"></a-entity>
-    </a-marker>
-    <!-- kaya pala  -->
+    <!-- bukas na -->
     <a-marker type="pattern" url="PATTS/pattern-G6.patt">
-      <a-plane id="imagePlane" scale="1 1.4 1" position="0 0 0" rotation="-90 0 0"
+      <a-plane scale="1 1.4 1" position="0 0 -0.55" rotation="-90 0 0"
         material="shader: flat; src:POSTERS/photo2.jpg"></a-plane>
-      <a-entity gltf-model="3D/FILM-FRAME.glb" scale="0.3 0.3 0.3" rotation="-90 0 0" position="0 0 1"></a-entity>
+      <a-video src="videos/trailer2.mp4" scale="1 0.55 0" position="0 0 0.65" rotation="-90 0 0" autoplay="true"
+        loop="true" muted="true"></a-video>
+      <a-entity gltf-model="3D/poster-trailer.glb" q scale="0.3 0.3 0.3" rotation="-90 0 0" position="0 0 1"></a-entity>
+    </a-marker>
+
+    <!-- huli ka ninang -->
+    <a-marker type="pattern" url="PATTS/pattern-G2.patt">
+      <a-plane scale="1 1.4 1" position="0 0 -0.55" rotation="-90 0 0"
+        material="shader: flat; src:POSTERS/photo3.jpg"></a-plane>
+      <a-video src="videos/trailer3.mp4" scale="1 0.55 0" position="0 0 0.65" rotation="-90 0 0"></a-video>
+      <a-entity gltf-model="3D/poster-trailer.glb" q scale="0.3 0.3 0.3" rotation="-90 0 0" position="0 0 1"></a-entity>
+    </a-marker>
+
+    <!-- kita kits -->
+    <a-marker type="pattern" url="PATTS/pattern-G4.patt">
+      <a-plane scale="1 1.4 1" position="0 0 -0.55" rotation="-90 0 0"
+        material="shader: flat; src:POSTERS/photo4.jpg"></a-plane>
+      <a-video src="videos/trailer4.mp4" scale="1 0.55 0" position="0 0 0.65" rotation="-90 0 0"></a-video>
+      <a-entity gltf-model="3D/poster-trailer.glb" q scale="0.3 0.3 0.3" rotation="-90 0 0" position="0 0 1"></a-entity>
+    </a-marker>
+
+    <!-- echoes of summer -->
+    <a-marker type="pattern" url="PATTS/pattern-G5.patt">
+      <a-plane scale="1 1.4 1" position="0 0 -0.55" rotation="-90 0 0"
+        material="shader: flat; src:POSTERS/photo5.jpg"></a-plane>
+      <a-video src="videos/trailer5.mp4" scale="1 0.55 0" position="0 0 0.65" rotation="-90 0 0"></a-video>
+      <a-entity gltf-model="3D/poster-trailer.glb" q scale="0.3 0.3 0.3" rotation="-90 0 0" position="0 0 1"></a-entity>
+    </a-marker>
+
+    <!-- kaya pala -->
+    <a-marker type="pattern" url="PATTS/pattern-G3.patt">
+      <a-plane scale="1 1.4 1" position="0 0 -0.55" rotation="-90 0 0"
+        material="shader: flat; src:POSTERS/photo6.jpg"></a-plane>
+      <a-video src="videos/trailer6.mp4" scale="1 0.55 0" position="0 0 0.65" rotation="-90 0 0"></a-video>
+      <a-entity gltf-model="3D/poster-trailer.glb" q scale="0.3 0.3 0.3" rotation="-90 0 0" position="0 0 1"></a-entity>
     </a-marker>
 
     <!-- Camera to view the scene -->

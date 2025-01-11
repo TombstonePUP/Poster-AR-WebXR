@@ -1,10 +1,10 @@
 # Poster-AR-WebXR
 
-#REFERENCES
+# REFERENCES
 https://developers.google.com/ar/develop/webxr/hello-webxr
 https://threejs.org/
 
-#RUN LOCALLY
+# RUN LOCALLY
 Steps to Setting up an SSL-Enabled Local Server
 
 1. Generate an SSL Key and Certificate:
