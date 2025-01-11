@@ -139,22 +139,38 @@
                 });
 
                 // GLB loader function
-                function loadModel(positionX, positionZ, imagePath, rotation = 0) {
+                function loadModel(positionX, positionZ, imagePath, videoPath, rotation = 0) {
                     const loader = new THREE.GLTFLoader();
-                    loader.load('models/FILM-FRAME.glb', function (gltf) {
+                    loader.load('ALT/3D/poster-trailer.glb', function (gltf) {
                         gltf.scene.position.set(positionX, -0.3, -1 + positionZ);
                         gltf.scene.scale.set(0.1, 0.1, 0.1);
                         gltf.scene.rotation.y = rotation;
                         scene.add(gltf.scene);
 
+                        // Load and add the image texture
                         const textureLoader = new THREE.TextureLoader();
                         textureLoader.load(imagePath, function (texture) {
                             const photoGeometry = new THREE.PlaneGeometry(0.35, 0.5);
                             const photoMaterial = new THREE.MeshBasicMaterial({ map: texture });
                             const photo = new THREE.Mesh(photoGeometry, photoMaterial);
-                            photo.position.set(positionX, 0.02, -0.99 + positionZ);
+                            photo.position.set(positionX, 0.21, -0.99 + positionZ);
                             photo.rotation.y = rotation;
                             scene.add(photo);
+
+                            // Load and add the video texture below the image
+                            const video = document.createElement('video');
+                            video.src = videoPath;
+                            video.muted = true; // Prevent audio playback
+                            video.loop = true; // Loop the video
+                            video.play(); // Start playing the video
+
+                            const videoTexture = new THREE.VideoTexture(video);
+                            const videoGeometry = new THREE.PlaneGeometry(0.35, 0.2); // Adjust size as needed
+                            const videoMaterial = new THREE.MeshBasicMaterial({ map: videoTexture });
+                            const videoMesh = new THREE.Mesh(videoGeometry, videoMaterial);
+                            videoMesh.position.set(positionX, -0.18, -0.99 + positionZ - 0.01); // Position below the image
+                            videoMesh.rotation.y = rotation;
+                            scene.add(videoMesh);
                         }, undefined, function (error) {
                             console.error('An error occurred loading the photo texture:', error);
                         });
@@ -162,6 +178,18 @@
                         console.error('An error occurred loading the GLB model:', error);
                     });
                 }
+
+                // Loop through models and add video
+                for (let i = 0; i > -6; i--) {
+                    const imagePath = `ALT/POSTERS/photo${Math.abs(i - 0) + 1}.jpg`;
+                    const videoPath = `ALT/VIDEOS/trailer${Math.abs(i - 0) + 1}.mp4`; // Video paths
+                    if (i > -3) {
+                        loadModel(i, 0.5, imagePath, videoPath, 0);
+                    } else {
+                        loadModel(i + 3, 3, imagePath, videoPath, Math.PI);
+                    }
+                }
+
 
                 function loadVideoWithFrame(positionX, positionZ, videoPath, rotation = 0) {
                     const loader = new THREE.GLTFLoader();
@@ -196,17 +224,9 @@
                     });
                 }
 
-                // Example usage
                 loadVideoWithFrame(-2.5, 1.8, 'ALT/videos/section-trailer.mp4', 1.5);
 
-                for (let i = 0; i > -6; i--) {
-                    const imagePath = `ALT/POSTERS/photo${Math.abs(i - 0) + 1}.jpg`;
-                    if (i > -3) {
-                        loadModel(i, 0.5, imagePath, 0);
-                    } else {
-                        loadModel(i + 3, 3, imagePath, Math.PI);
-                    }
-                }
+
 
                 const renderer = new THREE.WebGLRenderer({
                     alpha: true,
