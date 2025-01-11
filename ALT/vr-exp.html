@@ -32,16 +32,12 @@
       text-align: center;
     }
 
-
-
     /* Mobile styles */
     @media (max-width: 600px) {
       #enter-vr span {
         display: inline-block;
         transform: rotate(90deg);
-        /* Rotate only the text */
         transform-origin: center;
-        /* Keep rotation centered */
       }
     }
   </style>
@@ -51,29 +47,28 @@
   <button id="enter-vr"><span>Enter VR</span></button>
   <a-scene embedded antialias="false" stats="false" vr-mode-ui="enabled: false">
     <!-- Video with Sound (hidden) -->
-    <a-video id="background-sound" src="videos/section-trailer.mp4" autoplay="true" loop="false" position="-0.5 6 -9" scale="12.5 7" playsinline></a-video>
+    <a-video id="background-sound" src="videos/section-trailer.mp4" autoplay="true" loop="false" position="-0.5 6 -9"
+      scale="12.5 7" playsinline></a-video>
 
+    <!-- GLB Model -->
+    <!-- <a-entity gltf-model="3D/theater.glb" scale="1 1 1" rotation="0 180 0" position="-0.5 1.5 -2.5"></a-entity> -->
 
-    <!-- Picture Plane -->
-    <!-- <a-plane id="imagePlane" scale="1 1.4 1" position="0 2.5 -3" rotation="0 0 0" material="shader: flat; src:POSTERS/PIYESA-Poster.png"></a-plane> -->
-    <!-- GLB Model slightly behind the picture -->
-    <!-- <a-entity gltf-model="3D/FILM-FRAME.glb" scale="0.3 0.3 0.3" rotation="0 0 0" position="0 1.5 -3.2"></a-entity> -->
-    <a-entity gltf-model="3D/theater.glb" scale="1 1 1" rotation="0 180 0" position="-0.5 1.5 -2.5"></a-entity>
-    <!-- Camera to view the scene -->
+    <!-- Click-to-Move Targets -->
+    <a-entity id="move-target1" clickable geometry="primitive: plane; height: 1; width: 1"
+      material="color: blue; opacity: 0.5" position="1 3 -1" rotation="-90 0 0"></a-entity>
+    <a-entity id="move-target2" clickable geometry="primitive: plane; height: 1; width: 1"
+      material="color: red; opacity: 0.5" position="-2 3 -1" rotation="-90 0 0"></a-entity>
+
+    <!-- Camera -->
     <a-entity camera position="0 1.6 0"></a-entity>
   </a-scene>
+
   <script>
     // Custom VR button functionality
     const enterVRButton = document.getElementById('enter-vr');
     enterVRButton.addEventListener('click', () => {
       document.querySelector('a-scene').enterVR();
     });
-    // Show overlay message
-    const overlay = document.getElementById('overlay');
-    overlay.style.display = 'block';
-    setTimeout(() => {
-      overlay.style.display = 'none';
-    }, 5000);
 
     // Attempt to enter VR mode programmatically
     window.addEventListener('load', () => {
@@ -83,13 +78,21 @@
       });
     });
 
-    // Fallback message for browsers that require interaction
-    document.body.addEventListener('click', () => {
-      const scene = document.querySelector('a-scene');
-      if (!scene.is('vr-mode')) {
-        scene.enterVR();
-      }
-    }, { once: true });
+    // Click-to-move feature
+    document.querySelectorAll('[clickable]').forEach(element => {
+      element.addEventListener('click', (event) => {
+        const camera = document.querySelector('a-entity[camera]');
+        const targetPosition = event.target.getAttribute('position');
+
+        // Animate movement of the camera to the target position
+        camera.setAttribute('animation', {
+          property: 'position',
+          to: `${targetPosition.x} 1.6 ${targetPosition.z}`,
+          dur: 1000,
+          easing: 'easeInOutQuad'
+        });
+      });
+    });
   </script>
 </body>
 
