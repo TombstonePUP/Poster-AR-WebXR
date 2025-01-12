@@ -55,26 +55,29 @@
         p {
             font-size: 16px;
             color: #cccccc;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
+           margin-top: -0.5vh;
         }
     
         button {
-            background: linear-gradient(135deg, #0056b3, #2f2f5f);
-            color: white;
-            font-size: 16px;
-            padding: 12px 20px;
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 86, 179, 0.5);
-        }
+        background: linear-gradient(135deg, #0056b3, #2f2f5f);
+        color: white;
+        font-size: 16px;
+        padding: 12px 20px;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 86, 179, 0.5);
+    }
     
-        button:hover {
-            background: linear-gradient(135deg, #003d80, #1f1f4a);
-            box-shadow: 0 4px 20px rgba(0, 61, 128, 0.7);
-        }
+    button:hover,
+    button:active {
+        background: linear-gradient(135deg, #003d80, #1f1f4a);
+        box-shadow: 0 4px 20px rgba(0, 61, 128, 0.7);
+        transform: scale(1.05); /* Slightly scale up the button */
+    }
     
         /* Mobile styles */
         @media (max-width: 600px) {
@@ -87,9 +90,9 @@
             }
     
             button {
-                font-size: 14px;
-                padding: 10px 18px;
-            }
+            font-size: 14px;
+            padding: 10px 18px;
+        }
     
             .container {
                 padding: 20px; /* Adjusted padding for smaller screens */
