@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>Immerzion</title>
 
     <!-- three.js -->
@@ -24,142 +25,162 @@
             color: #ffffff;
             position: relative;
         }
-    
+
         .container {
             text-align: center;
-            padding: 40px; /* Increased padding to give space for the glow */
+            padding: 40px;
+            /* Increased padding to give space for the glow */
             margin: 0 5vw;
-            max-width: 450px; /* Increased width */
+            max-width: 450px;
+            /* Increased width */
             width: 100%;
             background: rgba(20, 20, 40, 0.9);
             border-radius: 12px;
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
             position: relative;
-            z-index: 2; /* Ensures container appears on top of other elements */
+            z-index: 2;
+            /* Ensures container appears on top of other elements */
         }
-    
+
         .btns {
             display: flex;
-            flex-direction: row; /* Align buttons horizontally */
-            gap: 1rem; /* Add space between the buttons */
-            justify-content: center; /* Center buttons horizontally */
+            flex-direction: row;
+            /* Align buttons horizontally */
+            gap: 1rem;
+            /* Add space between the buttons */
+            justify-content: center;
+            /* Center buttons horizontally */
         }
-    
+
         h1 {
             color: #ffffff;
             font-size: 28px;
             margin-bottom: 10px;
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
         }
-    
+
         p {
             font-size: 16px;
             color: #cccccc;
             margin-bottom: 30px;
-           /* margin-top: -0.1vh; */
+            /* margin-top: -0.1vh; */
         }
-    
+
         button {
-        background: linear-gradient(135deg, #0056b3, #2f2f5f);
-        color: white;
-        font-size: 16px;
-        padding: 12px 20px;
-        border: none;
-        cursor: pointer;
-        text-decoration: none;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0, 86, 179, 0.5);
-    }
-    
-    button:hover,
-    button:active {
-        background: linear-gradient(135deg, #003d80, #1f1f4a);
-        box-shadow: 0 4px 20px rgba(0, 61, 128, 0.7);
-        transform: scale(1.05); /* Slightly scale up the button */
-    }
-    
+            background: linear-gradient(135deg, #0056b3, #2f2f5f);
+            color: white;
+            font-size: 16px;
+            padding: 12px 20px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 86, 179, 0.5);
+        }
+
+        button:hover,
+        button:active {
+            background: linear-gradient(135deg, #003d80, #1f1f4a);
+            box-shadow: 0 4px 20px rgba(0, 61, 128, 0.7);
+            transform: scale(1.05);
+            /* Slightly scale up the button */
+        }
+
         /* Mobile styles */
         @media (max-width: 600px) {
             h1 {
                 font-size: 22px;
             }
-    
+
             p {
                 font-size: 14px;
             }
-    
+
             button {
-            font-size: 14px;
-            padding: 10px 18px;
-        }
-    
+                font-size: 14px;
+                padding: 10px 18px;
+            }
+
             .container {
-                padding: 20px; /* Adjusted padding for smaller screens */
+                padding: 20px;
+                /* Adjusted padding for smaller screens */
             }
         }
-    
+
         /* Footer styles */
         footer {
             position: absolute;
             bottom: 9vh;
             width: 100%;
             text-align: center;
-            z-index: 1; /* Ensures footer appears above the galaxy */
+            z-index: 1;
+            /* Ensures footer appears above the galaxy */
         }
-    
+
         footer .footer-text {
             font-size: 12px;
             color: #cccccc96;
         }
-    
+
         footer img {
-            width: 150px; /* Adjust the logo size */
+            width: 150px;
+            /* Adjust the logo size */
             height: auto;
             opacity: 0.8;
             transition: opacity 0.3s ease;
         }
-    
+
         footer img:hover {
             opacity: 1;
         }
+
         .footer-text {
-         margin-bottom: -0.7vh;
+            margin-bottom: -0.7vh;
         }
-    
+
         /* Sunray-like glow effect at the bottom */
         .glow {
             position: absolute;
-            bottom: -25vh; /* Positioned further down to make it feel like it’s coming from below */
+            bottom: -25vh;
+            /* Positioned further down to make it feel like it’s coming from below */
             left: 0;
             width: 100%;
-            height: 400px; /* Increased height for larger glow effect */
+            height: 400px;
+            /* Increased height for larger glow effect */
             background: radial-gradient(circle, rgba(255, 255, 255, 0.226), rgba(0, 87, 179, 0.301) 60%, rgba(0, 0, 0, 0) 100%);
-            filter: blur(90px); /* Slightly larger blur to enhance the sunray effect */
+            filter: blur(90px);
+            /* Slightly larger blur to enhance the sunray effect */
             animation: glowAnimation 3s infinite ease-in-out;
-            z-index: 3; /* Ensure it stays on top of everything */
+            z-index: 3;
+            /* Ensure it stays on top of everything */
         }
+
         #title-glow {
             position: absolute;
-           top: -15vh; /* Positioned further down to make it feel like it’s coming from below */
+            top: -15vh;
+            /* Positioned further down to make it feel like it’s coming from below */
             left: 0;
             width: 100%;
-            height: 200px; /* Increased height for larger glow effect */
+            height: 200px;
+            /* Increased height for larger glow effect */
             background: radial-gradient(circle, rgba(255, 255, 255, 0.226), rgba(0, 87, 179, 0.301) 60%, rgba(0, 0, 0, 0) 100%);
-            filter: blur(90px); /* Slightly larger blur to enhance the sunray effect */
-            animation: glowAnimation 3s infinite ease-in-out;
-            z-index: 3; /* Ensure it stays on top of everything */
+            filter: blur(90px);
+            /* Slightly larger blur to enhance the sunray effect */
+            animation: glowAnimation 5s infinite ease-in-out;
+            z-index: 3;
+            /* Ensure it stays on top of everything */
         }
-    
+
         @keyframes glowAnimation {
             0% {
                 opacity: 0.4;
             }
-    
+
             50% {
                 opacity: 1;
             }
-    
+
             100% {
                 opacity: 0.4;
             }
@@ -168,10 +189,12 @@
         /* Title image placeholder */
         .title-image {
             position: absolute;
-            top: 18vh; /* Adjust the position of the title image */
+            top: 18vh;
+            /* Adjust the position of the title image */
             left: 50%;
             transform: translateX(-50%);
-            width: 200px; /* Adjust the width of the image */
+            width: 200px;
+            /* Adjust the width of the image */
             height: auto;
             opacity: 0.8;
             transition: opacity 0.3s ease;
@@ -181,10 +204,59 @@
         .title-image:hover {
             opacity: 1;
         }
+
+        .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    backdrop-filter: blur(5px); /* Blur effect */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* On top of all elements */
+    visibility: hidden; /* Hidden by default */
+}
+
+.overlay-content {
+    text-align: center;
+    color: white;
+    font-size: 24px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 90%;
+    word-wrap: break-word;
+}
+
+.overlay.active {
+    visibility: visible; /* Show when active */
+}
+
+#warning{
+    /* font-size: 10px; */
+    margin-bottom: -1vh;
+}
+#proceed{
+    color: #fafafa86;
+    /* margin-bottom: -0.01vh; */
+}
+
     </style>
 </head>
 
 <body>
+    <!-- Desktop Notification -->
+    <div class="overlay">
+        <div class="overlay-content">
+          <p id="warning">This site is designed for mobile devices</p>
+          <p id="proceed">Click anywhere to proceed</p>
+        </div>
+      </div>
+      
+
     <!-- Title image placeholder -->
     <img src="ALT\PNG\title-aura.png" alt="Immerzion Title" class="title-image">
     <div class="glow" id="title-glow"></div>
@@ -214,22 +286,33 @@
         renderer.domElement.style.top = "0"; // Set top to 0 so it covers the full viewport
         renderer.domElement.style.left = "0"; // Set left to 0
         document.body.appendChild(renderer.domElement);
-    
+
+    // Add event listener to activate the overlay if needed
+if (window.innerWidth > 768) { // Check if it's a desktop-sized screen
+    document.querySelector('.overlay').classList.add('active');
+}
+
+// Add click event to remove the overlay when clicked anywhere
+document.querySelector('.overlay').addEventListener('click', function () {
+    this.classList.remove('active');
+});
+
+
         const geometry = new THREE.SphereGeometry(0.1, 16, 16);
         const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    
+
         function resize() {
             const width = window.innerWidth;
             const height = window.innerHeight;
-            
+
             // Update the renderer size
             renderer.setSize(width, height);
-            
+
             // Update the camera's aspect ratio and the projection matrix
             camera.aspect = width / height;
             camera.updateProjectionMatrix();
         }
-    
+
         function createStar() {
             const star = new THREE.Mesh(geometry, material);
             star.position.set(
@@ -239,43 +322,43 @@
             );
             scene.add(star);
         }
-    
+
         Array(500).fill().forEach(createStar);
         camera.position.z = 5;
-    
+
         function animate() {
             requestAnimationFrame(animate);
             scene.rotation.x += 0.001;
             scene.rotation.y += 0.001;
             renderer.render(scene, camera);
         }
-    
+
         animate();
         window.addEventListener('resize', resize);
-    
+
         async function activateVR() {
             window.location.href = 'ALT/vr-exp.html';
         }
-    
+
         async function activateXR() {
             // Detect iOS browsers (Safari, Chrome on iPhone, etc.)
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
             const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    
+
             // Check if WebXR is unsupported or the browser is iOS/Safari
             if (isIOS || isSafari || !navigator.xr) {
                 console.warn("WebXR not supported on this device or browser. Redirecting...");
                 window.location.href = "ALT/ar-exp.html";
                 return;
             }
-    
+
             try {
                 const canvas = document.createElement("canvas");
                 document.body.appendChild(canvas);
                 const gl = canvas.getContext("webgl", { xrCompatible: true });
-    
+
                 const sceneXR = new THREE.Scene();
-    
+
                 // Load the logo GLB model
                 const logoLoader = new THREE.GLTFLoader();
                 logoLoader.load('models/LOGO.glb', function (gltf) {
@@ -284,7 +367,7 @@
                 }, undefined, function (error) {
                     console.error('An error occurred loading the GLB model:', error);
                 });
-    
+
                 function loadModel(positionX, positionZ, imagePath, videoPath, rotation = 0) {
                     const loader = new THREE.GLTFLoader();
                     loader.load('ALT/3D/poster-trailer.glb', function (gltf) {
@@ -292,7 +375,7 @@
                         gltf.scene.scale.set(0.1, 0.1, 0.1);
                         gltf.scene.rotation.y = rotation;
                         sceneXR.add(gltf.scene);
-    
+
                         // Load and add the image texture
                         const textureLoader = new THREE.TextureLoader();
                         textureLoader.load(imagePath, function (texture) {
@@ -302,14 +385,14 @@
                             photo.position.set(positionX, 0.21, -0.99 + positionZ);
                             photo.rotation.y = rotation;
                             sceneXR.add(photo);
-    
+
                             // Load and add the video texture below the image
                             const video = document.createElement('video');
                             video.src = videoPath;
                             video.muted = true; // Prevent audio playback
                             video.loop = true; // Loop the video
                             video.play(); // Start playing the video
-    
+
                             const videoTexture = new THREE.VideoTexture(video);
                             const videoGeometry = new THREE.PlaneGeometry(0.35, 0.2); // Adjust size as needed
                             const videoMaterial = new THREE.MeshBasicMaterial({ map: videoTexture });
@@ -324,7 +407,7 @@
                         console.error('An error occurred loading the GLB model:', error);
                     });
                 }
-    
+
                 // Loop through models and add video
                 for (let i = 0; i > -6; i--) {
                     const imagePath = `ALT/POSTERS/photo${Math.abs(i - 0) + 1}.jpg`;
@@ -335,7 +418,7 @@
                         loadModel(i + 3, 3, imagePath, videoPath, Math.PI);
                     }
                 }
-    
+
                 const rendererXR = new THREE.WebGLRenderer({
                     alpha: true,
                     preserveDrawingBuffer: true,
@@ -343,37 +426,37 @@
                     context: gl
                 });
                 rendererXR.autoClear = false;
-    
+
                 const cameraXR = new THREE.PerspectiveCamera();
                 cameraXR.matrixAutoUpdate = false;
-    
+
                 const session = await navigator.xr.requestSession("immersive-ar");
                 session.updateRenderState({
                     baseLayer: new XRWebGLLayer(session, gl)
                 });
-    
+
                 const referenceSpace = await session.requestReferenceSpace('local');
-    
+
                 const onXRFrame = (time, frame) => {
                     session.requestAnimationFrame(onXRFrame);
                     gl.bindFramebuffer(gl.FRAMEBUFFER, session.renderState.baseLayer.framebuffer);
-    
+
                     const pose = frame.getViewerPose(referenceSpace);
                     if (pose) {
                         const view = pose.views[0];
                         const viewport = session.renderState.baseLayer.getViewport(view);
                         rendererXR.setSize(viewport.width, viewport.height);
-    
+
                         cameraXR.matrix.fromArray(view.transform.matrix);
                         cameraXR.projectionMatrix.fromArray(view.projectionMatrix);
                         cameraXR.updateMatrixWorld(true);
-    
+
                         rendererXR.render(sceneXR, cameraXR);
                     }
                 };
-    
+
                 session.requestAnimationFrame(onXRFrame);
-    
+
             } catch (error) {
                 console.error("An error occurred:", error);
                 if (error.name === "NotSupportedError" || error.message.includes("No runtimes supported")) {
@@ -383,7 +466,7 @@
             }
         }
     </script>
-    
+
 </body>
 
 </html>
