@@ -71,7 +71,8 @@
         }
 
         button {
-            font-family: 'DM Sans', sans-serif; /* Using DM Sans */
+            font-family: 'DM Sans', sans-serif;
+            /* Using DM Sans */
             background: linear-gradient(135deg, #0056b3, #2f2f5f);
             color: white;
             font-size: 16px;
@@ -212,62 +213,77 @@
         }
 
         .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    backdrop-filter: blur(5px); /* Blur effect */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999; /* On top of all elements */
-    visibility: hidden; /* Hidden by default */
-}
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            /* Semi-transparent background */
+            backdrop-filter: blur(5px);
+            /* Blur effect */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            /* On top of all elements */
+            visibility: hidden;
+            /* Hidden by default */
+        }
 
-.overlay-content {
-    text-align: center;
-    color: white;
-    font-size: 24px;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 90%;
-    word-wrap: break-word;
-}
+        .overlay-content {
+            text-align: center;
+            color: white;
+            font-size: 24px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 90%;
+            word-wrap: break-word;
+        }
 
-.overlay.active {
-    visibility: visible; /* Show when active */
-}
+        .overlay.active {
+            visibility: visible;
+            /* Show when active */
+        }
 
-#warning{
-    /* font-size: 10px; */
-    margin-bottom: -1vh;
-}
-#proceed{
-    color: #fafafa86;
-    /* margin-bottom: -0.01vh; */
-}
+        #warning {
+            /* font-size: 10px; */
+            margin-bottom: -1vh;
+        }
 
+        #proceed {
+            color: #fafafa86;
+            /* margin-bottom: -0.01vh; */
+        }
+
+        background-audio {
+            display: none;
+            /* Hides the player */
+        }
     </style>
 </head>
 
 <body>
+    <!-- Ambient Audio -->
+    <audio id="background-audio" autoplay loop preload="auto">
+        <source src="ALT\audio\Space Ambient.mp3" type="audio/mp3">
+    </audio>
+
     <!-- Desktop Notification -->
     <div class="overlay">
         <div class="overlay-content">
-          <p id="warning">This site is designed for mobile devices</p>
-          <p id="proceed">Click anywhere to proceed</p>
+            <p id="warning">This site is designed for mobile devices</p>
+            <p id="proceed">Click anywhere to proceed</p>
         </div>
-      </div>
-      
+    </div>
+
 
     <!-- Title image placeholder -->
     <a href="https://www.facebook.com/profile.php?id=61566187001785" target="_blank">
         <img src="ALT\PNG\title-aura.png" alt="Immerzion Title" class="title-image">
     </a>
-    
+
     <div class="glow" id="title-glow"></div>
     <div class="container">
         <p>Explore immersive augmented and virtual reality experiences with SkillUp Media.</p>
@@ -286,7 +302,7 @@
         <a href="https://www.facebook.com/profile.php?id=61566187001785" target="_blank">
             <img src="ALT/PNG/skp-logo.png" alt="SkillUp Media Logo">
         </a>
-        
+
     </footer>
 
     <script>
@@ -299,15 +315,15 @@
         renderer.domElement.style.left = "0"; // Set left to 0
         document.body.appendChild(renderer.domElement);
 
-    // Add event listener to activate the overlay if needed
-if (window.innerWidth > 768) { // Check if it's a desktop-sized screen
-    document.querySelector('.overlay').classList.add('active');
-}
+        // Add event listener to activate the overlay if needed
+        if (window.innerWidth > 768) { // Check if it's a desktop-sized screen
+            document.querySelector('.overlay').classList.add('active');
+        }
 
-// Add click event to remove the overlay when clicked anywhere
-document.querySelector('.overlay').addEventListener('click', function () {
-    this.classList.remove('active');
-});
+        // Add click event to remove the overlay when clicked anywhere
+        document.querySelector('.overlay').addEventListener('click', function () {
+            this.classList.remove('active');
+        });
 
 
         const geometry = new THREE.SphereGeometry(0.1, 16, 16);
@@ -477,6 +493,19 @@ document.querySelector('.overlay').addEventListener('click', function () {
                 }
             }
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+    const audioElement = document.getElementById('background-audio');
+    audioElement.muted = false; // Set to false after ensuring autoplay compliance
+
+    // Optionally handle user interactions
+    window.addEventListener('click', () => {
+        if (audioElement.paused) {
+            audioElement.play();
+        }
+    });
+});
+
     </script>
 
 </body>
