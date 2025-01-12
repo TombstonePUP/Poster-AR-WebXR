@@ -202,8 +202,16 @@
     <script>
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
-
+        const renderer = new THREE.WebGLRenderer({ alpha: true, preserveDrawingBuffer: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.domElement.style.position = "absolute"; // Position the renderer absolutely
+        renderer.domElement.style.top = "0"; // Set top to 0 so it covers the full viewport
+        renderer.domElement.style.left = "0"; // Set left to 0
+        document.body.appendChild(renderer.domElement);
+    
+        const geometry = new THREE.SphereGeometry(0.1, 16, 16);
+        const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    
         function resize() {
             const width = window.innerWidth;
             const height = window.innerHeight;
@@ -215,16 +223,7 @@
             camera.aspect = width / height;
             camera.updateProjectionMatrix();
         }
-
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.domElement.style.position = "absolute"; // Position the renderer absolutely
-        renderer.domElement.style.top = "0"; // Set top to 0 so it covers the full viewport
-        renderer.domElement.style.left = "0"; // Set left to 0
-        document.body.appendChild(renderer.domElement);
-
-        const geometry = new THREE.SphereGeometry(0.1, 16, 16);
-        const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
-
+    
         function createStar() {
             const star = new THREE.Mesh(geometry, material);
             star.position.set(
@@ -234,41 +233,141 @@
             );
             scene.add(star);
         }
-
+    
         Array(500).fill().forEach(createStar);
-
         camera.position.z = 5;
-
+    
         function animate() {
             requestAnimationFrame(animate);
-
             scene.rotation.x += 0.001;
             scene.rotation.y += 0.001;
-
             renderer.render(scene, camera);
         }
-
+    
         animate();
-
-        // Listen for window resize events
         window.addEventListener('resize', resize);
-
-        function activateVR() {
+    
+        async function activateVR() {
             window.location.href = 'ALT/vr-exp.html';
         }
-
+    
         async function activateXR() {
+            // Detect iOS browsers (Safari, Chrome on iPhone, etc.)
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
             const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-
+    
+            // Check if WebXR is unsupported or the browser is iOS/Safari
             if (isIOS || isSafari || !navigator.xr) {
                 console.warn("WebXR not supported on this device or browser. Redirecting...");
                 window.location.href = "ALT/ar-exp.html";
                 return;
             }
-
+    
             try {
-                // WebXR logic here...
+                const canvas = document.createElement("canvas");
+                document.body.appendChild(canvas);
+                const gl = canvas.getContext("webgl", { xrCompatible: true });
+    
+                const sceneXR = new THREE.Scene();
+    
+                // Load the logo GLB model
+                const logoLoader = new THREE.GLTFLoader();
+                logoLoader.load('models/LOGO.glb', function (gltf) {
+                    gltf.scene.position.set(0, -1, -1);
+                    sceneXR.add(gltf.scene);
+                }, undefined, function (error) {
+                    console.error('An error occurred loading the GLB model:', error);
+                });
+    
+                function loadModel(positionX, positionZ, imagePath, videoPath, rotation = 0) {
+                    const loader = new THREE.GLTFLoader();
+                    loader.load('ALT/3D/poster-trailer.glb', function (gltf) {
+                        gltf.scene.position.set(positionX, -0.3, -1 + positionZ);
+                        gltf.scene.scale.set(0.1, 0.1, 0.1);
+                        gltf.scene.rotation.y = rotation;
+                        sceneXR.add(gltf.scene);
+    
+                        // Load and add the image texture
+                        const textureLoader = new THREE.TextureLoader();
+                        textureLoader.load(imagePath, function (texture) {
+                            const photoGeometry = new THREE.PlaneGeometry(0.35, 0.5);
+                            const photoMaterial = new THREE.MeshBasicMaterial({ map: texture });
+                            const photo = new THREE.Mesh(photoGeometry, photoMaterial);
+                            photo.position.set(positionX, 0.21, -0.99 + positionZ);
+                            photo.rotation.y = rotation;
+                            sceneXR.add(photo);
+    
+                            // Load and add the video texture below the image
+                            const video = document.createElement('video');
+                            video.src = videoPath;
+                            video.muted = true; // Prevent audio playback
+                            video.loop = true; // Loop the video
+                            video.play(); // Start playing the video
+    
+                            const videoTexture = new THREE.VideoTexture(video);
+                            const videoGeometry = new THREE.PlaneGeometry(0.35, 0.2); // Adjust size as needed
+                            const videoMaterial = new THREE.MeshBasicMaterial({ map: videoTexture });
+                            const videoMesh = new THREE.Mesh(videoGeometry, videoMaterial);
+                            videoMesh.position.set(positionX, -0.18, -0.99 + positionZ - 0.01); // Position below the image
+                            videoMesh.rotation.y = rotation;
+                            sceneXR.add(videoMesh);
+                        }, undefined, function (error) {
+                            console.error('An error occurred loading the photo texture:', error);
+                        });
+                    }, undefined, function (error) {
+                        console.error('An error occurred loading the GLB model:', error);
+                    });
+                }
+    
+                // Loop through models and add video
+                for (let i = 0; i > -6; i--) {
+                    const imagePath = `ALT/POSTERS/photo${Math.abs(i - 0) + 1}.jpg`;
+                    const videoPath = `ALT/videos/trailer${Math.abs(i - 0) + 1}.mp4`; // Video paths
+                    if (i > -3) {
+                        loadModel(i, 0.5, imagePath, videoPath, 0);
+                    } else {
+                        loadModel(i + 3, 3, imagePath, videoPath, Math.PI);
+                    }
+                }
+    
+                const rendererXR = new THREE.WebGLRenderer({
+                    alpha: true,
+                    preserveDrawingBuffer: true,
+                    canvas: canvas,
+                    context: gl
+                });
+                rendererXR.autoClear = false;
+    
+                const cameraXR = new THREE.PerspectiveCamera();
+                cameraXR.matrixAutoUpdate = false;
+    
+                const session = await navigator.xr.requestSession("immersive-ar");
+                session.updateRenderState({
+                    baseLayer: new XRWebGLLayer(session, gl)
+                });
+    
+                const referenceSpace = await session.requestReferenceSpace('local');
+    
+                const onXRFrame = (time, frame) => {
+                    session.requestAnimationFrame(onXRFrame);
+                    gl.bindFramebuffer(gl.FRAMEBUFFER, session.renderState.baseLayer.framebuffer);
+    
+                    const pose = frame.getViewerPose(referenceSpace);
+                    if (pose) {
+                        const view = pose.views[0];
+                        const viewport = session.renderState.baseLayer.getViewport(view);
+                        rendererXR.setSize(viewport.width, viewport.height);
+    
+                        cameraXR.matrix.fromArray(view.transform.matrix);
+                        cameraXR.projectionMatrix.fromArray(view.projectionMatrix);
+                        cameraXR.updateMatrixWorld(true);
+    
+                        rendererXR.render(sceneXR, cameraXR);
+                    }
+                };
+    
+                session.requestAnimationFrame(onXRFrame);
+    
             } catch (error) {
                 console.error("An error occurred:", error);
                 if (error.name === "NotSupportedError" || error.message.includes("No runtimes supported")) {
@@ -278,6 +377,7 @@
             }
         }
     </script>
+    
 </body>
 
 </html>
