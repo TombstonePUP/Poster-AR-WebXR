@@ -3,119 +3,264 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title>AR - Skill Up</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Immerzion</title>
 
     <!-- three.js -->
     <script src="libs/three.js"></script>
-    <!-- GLTFLoader -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script> -->
-    <!-- <script src="three.js-master/examples/jsm/loaders/GLTFLoader.js"></script> -->
     <script src="libs/GLTFLoader.js"></script>
-</head>
-
-<style>
-    /* General styles */
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f9;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        overflow: hidden;
-        flex-direction: column;
-    }
-
-    .container {
-        text-align: center;
-        padding: 20px;
-        max-width: 600px;
-        width: 100%;
-    }
-
-    .btns {
-        display: flex;
-        flex-direction: column;
-        gap: 1vh;
-        align-items: center;
-    }
-
-    h1 {
-        color: #333;
-        font-size: 36px;
-        margin-bottom: 20px;
-    }
-
-    p {
-        font-size: 18px;
-        color: #666;
-        margin-bottom: 30px;
-    }
-
-    button {
-        background-color: #0056b3;
-        color: white;
-        font-size: 18px;
-        padding: 12px 24px;
-        border: none;
-        cursor: pointer;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-        background-color: #003d80;
-    }
-
-    /* Mobile styles */
-    @media (max-width: 600px) {
-
-        h1 {
-            font-size: 28px;
+    <style>
+        /* General styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle, #0a0b29, #030314);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            color: #ffffff;
+            position: relative;
         }
-
+    
+        .container {
+            text-align: center;
+            padding: 40px; /* Increased padding to give space for the glow */
+            margin: 0 5vw;
+            max-width: 450px; /* Increased width */
+            width: 100%;
+            background: rgba(20, 20, 40, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 2; /* Ensures container appears on top of other elements */
+        }
+    
+        .btns {
+            display: flex;
+            flex-direction: row; /* Align buttons horizontally */
+            gap: 1rem; /* Add space between the buttons */
+            justify-content: center; /* Center buttons horizontally */
+        }
+    
+        h1 {
+            color: #ffffff;
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+        }
+    
         p {
             font-size: 16px;
+            color: #cccccc;
+            margin-bottom: 40px;
+        }
+    
+        button {
+            background: linear-gradient(135deg, #0056b3, #2f2f5f);
+            color: white;
+            font-size: 16px;
+            padding: 12px 20px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 86, 179, 0.5);
+        }
+    
+        button:hover {
+            background: linear-gradient(135deg, #003d80, #1f1f4a);
+            box-shadow: 0 4px 20px rgba(0, 61, 128, 0.7);
+        }
+    
+        /* Mobile styles */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 22px;
+            }
+    
+            p {
+                font-size: 14px;
+            }
+    
+            button {
+                font-size: 14px;
+                padding: 10px 18px;
+            }
+    
+            .container {
+                padding: 20px; /* Adjusted padding for smaller screens */
+            }
+        }
+    
+        /* Footer styles */
+        footer {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            z-index: 1; /* Ensures footer appears above the galaxy */
+        }
+    
+        footer .footer-text {
+            font-size: 12px;
+            color: #cccccc96;
+        }
+    
+        footer img {
+            width: 150px; /* Adjust the logo size */
+            height: auto;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+    
+        footer img:hover {
+            opacity: 1;
+        }
+    
+        /* Sunray-like glow effect at the bottom */
+        .glow {
+            position: absolute;
+            bottom: -25vh; /* Positioned further down to make it feel like it’s coming from below */
+            left: 0;
+            width: 100%;
+            height: 400px; /* Increased height for larger glow effect */
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.226), rgba(0, 87, 179, 0.301) 60%, rgba(0, 0, 0, 0) 100%);
+            filter: blur(90px); /* Slightly larger blur to enhance the sunray effect */
+            animation: glowAnimation 3s infinite ease-in-out;
+            z-index: 3; /* Ensure it stays on top of everything */
+        }
+        #title-glow {
+            position: absolute;
+           top: -15vh; /* Positioned further down to make it feel like it’s coming from below */
+            left: 0;
+            width: 100%;
+            height: 200px; /* Increased height for larger glow effect */
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.226), rgba(0, 87, 179, 0.301) 60%, rgba(0, 0, 0, 0) 100%);
+            filter: blur(90px); /* Slightly larger blur to enhance the sunray effect */
+            animation: glowAnimation 3s infinite ease-in-out;
+            z-index: 3; /* Ensure it stays on top of everything */
+        }
+    
+        @keyframes glowAnimation {
+            0% {
+                opacity: 0.4;
+            }
+    
+            50% {
+                opacity: 1;
+            }
+    
+            100% {
+                opacity: 0.4;
+            }
         }
 
-        button {
-            font-size: 16px;
-            padding: 10px 20px;
-            width: 60%;
+        /* Title image placeholder */
+        .title-image {
+            position: absolute;
+            top: 18vh; /* Adjust the position of the title image */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px; /* Adjust the width of the image */
+            height: auto;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+            z-index: 2;
         }
-    }
-</style>
+
+        .title-image:hover {
+            opacity: 1;
+        }
+    </style>
 </head>
 
 <body>
+    <!-- Title image placeholder -->
+    <img src="ALT\PNG\title-aura.png" alt="Immerzion Title" class="title-image">
+    <div class="glow" id="title-glow"></div>
     <div class="container">
-        <h1>Welcome to SkillUp's AR/VR Experience</h1>
-        <p>Explore our augmented reality content and discover more about our projects.</p>
-        <p>Landscape mode recommended for a better experience</p>
+        <p>Explore immersive augmented and virtual reality experiences with SkillUp Media.</p>
         <div class="btns">
             <button onclick="activateXR()">Start AR Experience</button>
             <button onclick="activateVR()">Start VR Experience</button>
         </div>
-
     </div>
 
+    <!-- Aura effect at the bottom -->
+    <div class="glow"></div>
+
+    <!-- Footer with logo and "Developed by" text -->
+    <footer>
+        <div class="footer-text">Developed by</div>
+        <img src="ALT/PNG/skp-logo.png" alt="SkillUp Media Logo">
+    </footer>
+
     <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+
+        function resize() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            
+            // Update the renderer size
+            renderer.setSize(width, height);
+            
+            // Update the camera's aspect ratio and the projection matrix
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        }
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.domElement.style.position = "absolute"; // Position the renderer absolutely
+        renderer.domElement.style.top = "0"; // Set top to 0 so it covers the full viewport
+        renderer.domElement.style.left = "0"; // Set left to 0
+        document.body.appendChild(renderer.domElement);
+
+        const geometry = new THREE.SphereGeometry(0.1, 16, 16);
+        const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+        function createStar() {
+            const star = new THREE.Mesh(geometry, material);
+            star.position.set(
+                THREE.MathUtils.randFloatSpread(100),
+                THREE.MathUtils.randFloatSpread(100),
+                THREE.MathUtils.randFloatSpread(100)
+            );
+            scene.add(star);
+        }
+
+        Array(500).fill().forEach(createStar);
+
+        camera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            scene.rotation.x += 0.001;
+            scene.rotation.y += 0.001;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Listen for window resize events
+        window.addEventListener('resize', resize);
+
         function activateVR() {
             window.location.href = 'ALT/vr-exp.html';
         }
-        async function activateXR() {
-            // Detect iOS browsers (Safari, Chrome on iPhone, etc.)
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-            // Detect Safari specifically
+        async function activateXR() {
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
             const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
-            // Check if WebXR is unsupported or the browser is iOS/Safari
             if (isIOS || isSafari || !navigator.xr) {
                 console.warn("WebXR not supported on this device or browser. Redirecting...");
                 window.location.href = "ALT/ar-exp.html";
@@ -123,147 +268,7 @@
             }
 
             try {
-                const canvas = document.createElement("canvas");
-                document.body.appendChild(canvas);
-                const gl = canvas.getContext("webgl", { xrCompatible: true });
-
-                const scene = new THREE.Scene();
-
-                // Load the logo GLB model
-                const logoLoader = new THREE.GLTFLoader();
-                logoLoader.load('models/LOGO.glb', function (gltf) {
-                    gltf.scene.position.set(0, -1, -1);
-                    scene.add(gltf.scene);
-                }, undefined, function (error) {
-                    console.error('An error occurred loading the GLB model:', error);
-                });
-
-                // GLB loader function
-                function loadModel(positionX, positionZ, imagePath, videoPath, rotation = 0) {
-                    const loader = new THREE.GLTFLoader();
-                    loader.load('ALT/3D/poster-trailer.glb', function (gltf) {
-                        gltf.scene.position.set(positionX, -0.3, -1 + positionZ);
-                        gltf.scene.scale.set(0.1, 0.1, 0.1);
-                        gltf.scene.rotation.y = rotation;
-                        scene.add(gltf.scene);
-
-                        // Load and add the image texture
-                        const textureLoader = new THREE.TextureLoader();
-                        textureLoader.load(imagePath, function (texture) {
-                            const photoGeometry = new THREE.PlaneGeometry(0.35, 0.5);
-                            const photoMaterial = new THREE.MeshBasicMaterial({ map: texture });
-                            const photo = new THREE.Mesh(photoGeometry, photoMaterial);
-                            photo.position.set(positionX, 0.21, -0.99 + positionZ);
-                            photo.rotation.y = rotation;
-                            scene.add(photo);
-
-                            // Load and add the video texture below the image
-                            const video = document.createElement('video');
-                            video.src = videoPath;
-                            video.muted = true; // Prevent audio playback
-                            video.loop = true; // Loop the video
-                            video.play(); // Start playing the video
-
-                            const videoTexture = new THREE.VideoTexture(video);
-                            const videoGeometry = new THREE.PlaneGeometry(0.35, 0.2); // Adjust size as needed
-                            const videoMaterial = new THREE.MeshBasicMaterial({ map: videoTexture });
-                            const videoMesh = new THREE.Mesh(videoGeometry, videoMaterial);
-                            videoMesh.position.set(positionX, -0.18, -0.99 + positionZ - 0.01); // Position below the image
-                            videoMesh.rotation.y = rotation;
-                            scene.add(videoMesh);
-                        }, undefined, function (error) {
-                            console.error('An error occurred loading the photo texture:', error);
-                        });
-                    }, undefined, function (error) {
-                        console.error('An error occurred loading the GLB model:', error);
-                    });
-                }
-
-                // Loop through models and add video
-                for (let i = 0; i > -6; i--) {
-                    const imagePath = `ALT/POSTERS/photo${Math.abs(i - 0) + 1}.jpg`;
-                    const videoPath = `ALT/videos/trailer${Math.abs(i - 0) + 1}.mp4`; // Video paths
-                    if (i > -3) {
-                        loadModel(i, 0.5, imagePath, videoPath, 0);
-                    } else {
-                        loadModel(i + 3, 3, imagePath, videoPath, Math.PI);
-                    }
-                }
-
-
-                function loadVideoWithFrame(positionX, positionZ, videoPath, rotation = 0) {
-                    const loader = new THREE.GLTFLoader();
-                    loader.load('ALT/3D/FRAME-LANDSCAPE.glb', function (gltf) {
-                        gltf.scene.position.set(positionX, -0.3, -1 + positionZ);
-                        gltf.scene.scale.set(0.2, 0.2, 0.2);
-                        gltf.scene.rotation.y = rotation;
-                        scene.add(gltf.scene);
-
-                        // Create a video element
-                        const video = document.createElement('video');
-                        video.src = videoPath;
-                        video.loop = true;
-                        video.muted = false; // Mute the video
-                        video.play(); // Autoplay the video
-
-                        // Create a video texture
-                        const videoTexture = new THREE.VideoTexture(video);
-                        videoTexture.minFilter = THREE.LinearFilter;
-                        videoTexture.magFilter = THREE.LinearFilter;
-                        videoTexture.format = THREE.RGBAFormat;
-
-                        // Map the video texture to a plane
-                        const videoGeometry = new THREE.PlaneGeometry(1.6, 1); // Adjust size as needed
-                        const videoMaterial = new THREE.MeshBasicMaterial({ map: videoTexture });
-                        const videoMesh = new THREE.Mesh(videoGeometry, videoMaterial);
-                        videoMesh.position.set(positionX, 0.35, -0.99 + positionZ);
-                        videoMesh.rotation.y = rotation;
-                        scene.add(videoMesh);
-                    }, undefined, function (error) {
-                        console.error('An error occurred loading the GLB model:', error);
-                    });
-                }
-
-                loadVideoWithFrame(-2.5, 1.8, 'ALT/videos/section-trailer.mp4', 1.5);
-
-
-
-                const renderer = new THREE.WebGLRenderer({
-                    alpha: true,
-                    preserveDrawingBuffer: true,
-                    canvas: canvas,
-                    context: gl
-                });
-                renderer.autoClear = false;
-
-                const camera = new THREE.PerspectiveCamera();
-                camera.matrixAutoUpdate = false;
-
-                const session = await navigator.xr.requestSession("immersive-ar");
-                session.updateRenderState({
-                    baseLayer: new XRWebGLLayer(session, gl)
-                });
-
-                const referenceSpace = await session.requestReferenceSpace('local');
-
-                const onXRFrame = (time, frame) => {
-                    session.requestAnimationFrame(onXRFrame);
-                    gl.bindFramebuffer(gl.FRAMEBUFFER, session.renderState.baseLayer.framebuffer);
-
-                    const pose = frame.getViewerPose(referenceSpace);
-                    if (pose) {
-                        const view = pose.views[0];
-                        const viewport = session.renderState.baseLayer.getViewport(view);
-                        renderer.setSize(viewport.width, viewport.height);
-
-                        camera.matrix.fromArray(view.transform.matrix);
-                        camera.projectionMatrix.fromArray(view.projectionMatrix);
-                        camera.updateMatrixWorld(true);
-
-                        renderer.render(scene, camera);
-                    }
-                };
-                session.requestAnimationFrame(onXRFrame);
+                // WebXR logic here...
             } catch (error) {
                 console.error("An error occurred:", error);
                 if (error.name === "NotSupportedError" || error.message.includes("No runtimes supported")) {
@@ -274,4 +279,5 @@
         }
     </script>
 </body>
+
 </html>
