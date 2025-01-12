@@ -264,18 +264,22 @@
 
         .audio-notification {
             position: fixed;
-            bottom: 15px;
+            bottom: 25vh;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.7);
-            color: #fff;
+            background: rgba(255, 255, 255, 0.027);
+            color: #ffffff7e;
             padding: 10px 20px;
-            font-size: 16px;
+            font-size: 10px;
             border-radius: 8px;
             cursor: pointer;
             z-index: 1000;
             font-family: 'DM Sans', Arial, sans-serif;
             letter-spacing: 1px;
+            opacity: 1;
+            /* Initial opacity */
+            transition: opacity 1s ease-in-out;
+            /* Smooth fade-out effect */
         }
     </style>
 </head>
@@ -532,7 +536,6 @@
             const audioElement = document.getElementById('background-audio');
             const audioToggle = document.getElementById('audio-toggle');
 
-            // Initial setup to handle user interaction
             audioToggle.addEventListener('click', () => {
                 if (audioElement.paused) {
                     audioElement.play();
@@ -541,15 +544,16 @@
                     audioElement.pause();
                     audioToggle.textContent = "Tap for sound immersion";
                 }
-            });
-
-            // Optionally hide notification after interaction
-            audioElement.addEventListener('play', () => {
+                // Fade out the notification after interaction
                 setTimeout(() => {
-                    audioToggle.style.display = 'none';
-                }, 3000); // Hide after 3 seconds
+                    audioToggle.style.opacity = '0';  // Start fade out
+                    setTimeout(() => {
+                        audioToggle.style.display = 'none'; // Remove from view after fade
+                    }, 1000); // Matches the transition duration
+                }, 500); // Optional delay before fade-out starts
             });
         });
+
 
     </script>
 
