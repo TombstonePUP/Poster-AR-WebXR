@@ -109,6 +109,7 @@
         }
 
         /* Mobile styles */
+        /* Mobile styles */
         @media (max-width: 600px) {
             h1 {
                 font-size: 22px;
@@ -124,10 +125,23 @@
             }
 
             .container {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
                 padding: 20px;
-                /* Adjusted padding for smaller screens */
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .btns {
+                flex-direction: column;
+                width: 70%;
             }
         }
+
 
         /* Footer styles */
         footer {
@@ -332,8 +346,6 @@
             <button onclick="activateVR()">Start VR Experience</button>
         </div>
     </div>
-
-
 
     <div id="audio-toggle" class="audio-notification">
         Tap for sound immersion
