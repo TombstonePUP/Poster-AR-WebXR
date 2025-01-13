@@ -46,9 +46,9 @@
 
         .container {
             text-align: center;
-            padding: 40px;
+            padding: 3vh;
             /* Increased padding to give space for the glow */
-            margin: 0 5vw;
+            margin:  0 10px;
             max-width: 450px;
             /* Increased width */
             width: 100%;
@@ -126,14 +126,18 @@
 
             .container {
                 position: absolute;
-                top: 48%;
-                left: 46%;
+                top: 50%;
+                left: 50%;
                 transform: translate(-50%, -50%);
-                padding: 20px;
+                /* padding-bottom: 2.5vh; */
+                padding-top: 1vh;
                 display: flex;
+                width: 80%;
                 align-items: center;
                 flex-direction: column;
                 text-align: center;
+                /* padding: 0; */
+                margin: 0;
             }
 
             .btns {
@@ -340,7 +344,7 @@
 
     <div class="glow" id="title-glow"></div>
     <div class="container">
-        <p>Explore immersive augmented and virtual reality experiences with SkillUp Media.</p>
+        <p>Explore immersive augmented and virtual reality experiences.</p>
         <div class="btns">
             <button onclick="activateXR()">Start AR Experience</button>
             <button onclick="activateVR()">Start VR Experience</button>
