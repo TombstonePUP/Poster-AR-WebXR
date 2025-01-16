@@ -1,0 +1,13 @@
+{
+  "name": "poster-ar-webxr",
+  "version": "1.0.0",
+  "description": "DEVELOPER -- MARK FULGUERINAS\r UI/UX -- JUSTINE BAUTISTA\r QA -- REGIE SAN JUAN AND CHARLES ILARDE",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "admin-run": "node ALT/libs/not-developer.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

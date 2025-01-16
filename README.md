@@ -1,5 +1,9 @@
 # Poster-AR-WebXR
 
+DEVELOPER -- MARK FULGUERINAS
+UI/UX -- JUSTINE BAUTISTA
+QA -- REGIE SAN JUAN AND CHARLES ILARDE
+
 # REFERENCES
 https://developers.google.com/ar/develop/webxr/hello-webxr
 https://threejs.org/
@@ -28,4 +32,5 @@ http-server --ssl --cert C:/xampp/apache/bin/server.crt --key C:/xampp/apache/bi
 
 4. Alternative Command for Execution Policy Issues:
 If you encounter script execution restrictions, use the following command (Change the initial user directory):
-powershell -ExecutionPolicy Bypass -File "C:/Users/User/AppData/Roaming/npm/http-server.ps1" --ssl --cert C:/xampp/apache/bin/server.crt --key C:/xampp/apache/bin/server.key
+ - powershell -ExecutionPolicy Bypass -File "C:/Users/User/AppData/Roaming/npm/http-server.ps1" --ssl --cert C:/xampp/apache/bin/server.crt --key C:/xampp/apache/bin/server.key 
+ - npm run admin-run
